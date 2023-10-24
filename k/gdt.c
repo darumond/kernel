@@ -1,21 +1,21 @@
 #include "gdt.h"
 
-extern void gdt_flush(adr_t);
+extern void gdt_flush(uint32_t ptr);
 
-gdt_entry_t gdt_entries[5];
-gdt_ptr_t gdt_ptr;
+static gdt_entry_t gdt_entries[5];
+static gdt_ptr_t gdt_ptr;
 
 void init_gdt()
 {
     gdt_ptr.limit = (sizeof(gdt_entry_t) * 6) - 1;
     gdt_ptr.base = (uint32_t)&gdt_entries;
-    setGate(0, 0, 0, 0, 0);                // Null segment
-    setGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
-    setGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
-    setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
-    setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
+    setGate(0, 0, 0, 0, 0);                
+    setGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
+    setGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
+    setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
 
-    gdt_flush(&gdt_ptr);
+    gdt_flush((uint32_t)&gdt_ptr);
 }
 
 void setGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
