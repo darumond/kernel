@@ -1,7 +1,6 @@
-#define PORT 0x3f8 // COM1
-#include "io.h"
+#include "serial.h"
 
-static int init_serial()
+int init_serial()
 {
    outb(PORT + 1, 0x00); // Disable all interrupts
    outb(PORT + 3, 0x80); // Enable DLAB (set baud rate divisor)

@@ -25,6 +25,7 @@
 #include <../../libs/libc/include/stdio.h>
 #include "multiboot.h"
 #include "gdt.h"
+#include "serial.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
@@ -32,7 +33,8 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 	(void)info;
 
 	char star[4] = "|/-\\";
-	
+	init_serial();
+	printf("toto");
 	init_gdt();
 	char *fb = (void *)0xb8000;
 	for (unsigned i = 0;;)
