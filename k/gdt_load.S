@@ -1,8 +1,8 @@
 .intel_syntax noprefix
-.global gdt_flush
+.global gdt_load
 
 
-gdt_flush:
+gdt_load:
     //Switching to protected mode
     mov eax, [esp+4]
     lgdt [eax] //inform the processor that we filled the GDT

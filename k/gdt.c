@@ -1,6 +1,6 @@
 #include "gdt.h"
 
-extern void gdt_flush(uint32_t ptr);
+extern void gdt_load(uint32_t ptr);
 
 static gdt_entry_t gdt_entries[5];
 static gdt_ptr_t gdt_ptr;
@@ -15,7 +15,7 @@ void init_gdt()
     setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
     setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
 
-    gdt_flush((uint32_t)&gdt_ptr);
+    gdt_load((uint32_t)&gdt_ptr);
 }
 
 void setGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
