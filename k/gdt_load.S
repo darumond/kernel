@@ -13,11 +13,13 @@ gdt_load:
     mov ax, 0x10
     movw ds, ax //data selector
     movw es, ax //additional data segments available for the system programmer
-    movw fs, ax //additional data segments available for the system programmer
     movw gs, ax //additional data segments available for the system programmer
     movw ss, ax //stack selector
 
-    JMP 0x08:.flush
+    mov ax, 0x08
+    movw fs, ax //additional data segments available for the system programmer
+
+    JMP 0x08:.flush //in the first segment (index 1) of GDT jump to flush, set CS to 0x08
 
 .flush:
     RET

@@ -33,7 +33,8 @@ OBJS	= \
 	  serial.o \
 	  gdt.o \
 	  gdt_load.o \
-	  
+	  idt.o \
+	  idt_load.o \
 	  
 
 

@@ -7,13 +7,13 @@ static gdt_ptr_t gdt_ptr;
 
 void init_gdt()
 {
-    gdt_ptr.limit = (sizeof(gdt_entry_t) * 6) - 1;
-    gdt_ptr.base = (uint32_t)&gdt_entries;
-    setGate(0, 0, 0, 0, 0);                
-    setGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-    setGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-    setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-    setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+    gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1; //Length of GDT
+    gdt_ptr.base = (uint32_t)&gdt_entries; //adress of GDT
+    setGate(0, 0, 0, 0, 0); //not alloed to use the first page so set to NULL                
+    setGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); //kernel code
+    setGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); //kernel data 
+    setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); //user code
+    setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); //user data
 
     gdt_load((uint32_t)&gdt_ptr);
 }

@@ -4,12 +4,12 @@
 #include "stdint.h"
 struct gdt_entry_struct
 {
-   uint16_t limit;
-   uint16_t base_low;
-   uint8_t base_middle;
-   uint8_t access;
-   uint8_t flags;
-   uint8_t base_high;
+   uint16_t limit; //2 octets
+   uint16_t base_low; //2
+   uint8_t base_middle; //1
+   uint8_t access; //1
+   uint8_t flags; //1
+   uint8_t base_high; //1
 } __attribute__((packed));
 typedef struct gdt_entry_struct gdt_entry_t;
 
