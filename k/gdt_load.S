@@ -3,10 +3,10 @@
 
 
 gdt_load:
-    //Switching to protected mode
     mov eax, [esp+4]
     lgdt [eax] //inform the processor that we filled the GDT
 
+    //Switching to protected mode
     mov eax , 0x1
     mov cr0 , eax //Set PE (Protection Enable) to 1
 
