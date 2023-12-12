@@ -25,6 +25,7 @@
 #include <../../libs/libc/include/stdio.h>
 #include "multiboot.h"
 #include "gdt.h"
+#include "idt.h"
 #include "serial.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
@@ -36,11 +37,25 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 	init_serial();
 	printf("toto");
 	init_gdt();
+	init_idt();
+
+
+	asm volatile("Int $0");
+
+	printf("toto3");
+	// asm volatile(
+	// 	"mov $0, %%eax\n\t"
+	// 	"mov $0, %%edx\n\t"
+	// 	"div %%edx"
+	// 	:
+	// 	: /* no outputs */
+	// 	: "%eax", "%edx");
+	for (;;);	
 	char *fb = (void *)0xb8000;
 	for (unsigned i = 0;;)
 	{
 		*fb = star[i++ % 4];
 	}
-	for (;;)
-		asm volatile("hlt");
+	// for (;;)
+	// 	asm volatile("hlt");
 }
