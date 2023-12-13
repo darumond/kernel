@@ -1,27 +1,45 @@
 #include "serial.h"
 
+// WHEN DLAB = 0 (Read | Write)
+// PORT = RBR THR
+// PORT + 1 =  IER IER
+// PORT + 2 =  IIR FCR
+// PORT + 3 =  LCR LCR
+// PORT + 4 =  MCR MCR
+// PORT + 5 =  LSR FACTORY TEST
+// PORT + 6 =  MSR NOT USED
+// PORT + 7 =  SCR SCR
+
+// WHEN DLAB = 1 (Read | Write)
+// PORT = DLL DLL
+// PORT + 1 =  DLM DLM
+// PORT + 2 =  IIR FCR
+// PORT + 3 =  LCR LCR
+// PORT + 4 =  MCR MCR
+// PORT + 5 =  LSR FACTORY TEST
+// PORT + 6 =  MSR NOT USED
+// PORT + 7 =  SCR SCR
+
 int init_serial()
 {
-   outb(PORT + 1, 0x00); // Disable all interrupts
-   outb(PORT + 3, 0b10000000); // Enable DLAB (set baud rate divisor) 1000 0000 set DLAB to 1
-   //BAUD RATE
-   outb(PORT + 0, 0x03); // Set divisor to 3 (lo byte) 38400 baud 0000 0011
-   outb(PORT + 1, 0x00); //                  (hi byte)
+   outb(PORT + 1, 0b00000000); // Disable all interrupts
+   outb(PORT + 3, 0b10000000); // Enable DLAB (set baud rate divisor) 10000000 set DLAB to 1
+   // BAUD RATE
+   outb(PORT + 0, 0b00000011); // Set divisor to 3 (lo byte) 38400 baud 00000011
+   outb(PORT + 1, 0b00000000); //                   (hi byte)
 
-   
-   outb(PORT + 3, 0x03); // 8 bits, no parity, one stop bit
-   outb(PORT + 2, 0xC7); // Enable FIFO, clear them, with 14-byte threshold
-   outb(PORT + 4, 0x0B); // IRQs enabled, RTS/DSR set
-   outb(PORT + 4, 0x1E); // Set in loopback mode, test the serial chip
-   outb(PORT + 0, 0xAE); // Test serial chip (send byte 0xAE and check if serial returns same byte)
-   // Check if serial is faulty (i.e: not same byte as sent)
+   outb(PORT + 3, 0b00000011); // 8 bits, no parity, one stop bit
+   outb(PORT + 2, 0b11000111); // Enable FIFO, clear them, with 14-byte threshold
+   outb(PORT + 4, 0b00001011); // IRQs enabled, RTS/DSR set
+   outb(PORT + 4, 0b00011110); // Set in loopback mode, test the serial chip
+   outb(PORT + 0, 0b10101110); // Test serial chip (send byte 0xAE and check if serial returns same byte)
+
    if (inb(PORT + 0) != 0xAE)
    {
       return 1;
    }
 
-   // If serial is not faulty set it in normal operation mode
-   // (not-loopback with IRQs enabled and OUT#1 and OUT#2 bits enabled)
+   //Turn back to normal mode
    outb(PORT + 4, 0x0F);
    return 0;
 }

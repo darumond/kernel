@@ -37,20 +37,19 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 	char star[4] = "|/-\\";
 	
 	init_serial();
-	printf("toto");
+	// printf("toto");
 	init_gdt();
 	init_idt();
 	initKeyboard();
 	// initPIT();
 	// asm volatile("Int $32");
 
-	printf("toto3");
-	for (;;);	
+	// printf("toto3");
 	char *fb = (void *)0xb8000;
 	for (unsigned i = 0;;)
 	{
 		*fb = star[i++ % 4];
 	}
-	// for (;;)
-	// 	asm volatile("hlt");
+	for (;;)
+		asm volatile("hlt");
 }
