@@ -40,16 +40,9 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 	init_idt();
 
 
-	asm volatile("Int $0");
+	asm volatile("Int $1");
 
 	printf("toto3");
-	// asm volatile(
-	// 	"mov $0, %%eax\n\t"
-	// 	"mov $0, %%edx\n\t"
-	// 	"div %%edx"
-	// 	:
-	// 	: /* no outputs */
-	// 	: "%eax", "%edx");
 	for (;;);	
 	char *fb = (void *)0xb8000;
 	for (unsigned i = 0;;)
