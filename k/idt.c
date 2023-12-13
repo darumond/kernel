@@ -4,7 +4,6 @@ idt_entry_t idt[256];
 idt_ptr_t idt_ptr;
 
 extern void idt_load(uint32_t);
-extern void irq0();
 
 char *exception_messages[] =
     {
@@ -120,6 +119,22 @@ void init_idt()
     setIdtGates(30, (uint32_t)isr30, 0x08, 0x8E);
     setIdtGates(31, (uint32_t)isr31, 0x08, 0x8E);
 
+    setIdtGates(32, (uint32_t)irq0, 0x08, 0x8E);
+    setIdtGates(33, (uint32_t)irq1, 0x08, 0x8E);
+    setIdtGates(34, (uint32_t)irq2, 0x08, 0x8E);
+    setIdtGates(35, (uint32_t)irq3, 0x08, 0x8E);
+    setIdtGates(36, (uint32_t)irq4, 0x08, 0x8E);
+    setIdtGates(37, (uint32_t)irq5, 0x08, 0x8E);
+    setIdtGates(38, (uint32_t)irq6, 0x08, 0x8E);
+    setIdtGates(39, (uint32_t)irq7, 0x08, 0x8E);
+    setIdtGates(40, (uint32_t)irq8, 0x08, 0x8E);
+    setIdtGates(41, (uint32_t)irq9, 0x08, 0x8E);
+    setIdtGates(42, (uint32_t)irq10, 0x08, 0x8E);
+    setIdtGates(43, (uint32_t)irq11, 0x08, 0x8E);
+    setIdtGates(44, (uint32_t)irq12, 0x08, 0x8E);
+    setIdtGates(45, (uint32_t)irq13, 0x08, 0x8E);
+    setIdtGates(46, (uint32_t)irq14, 0x08, 0x8E);
+    setIdtGates(47, (uint32_t)irq15, 0x08, 0x8E);
     idt_load((uint32_t)&idt_ptr);
 }
 void fault_handler(int32_t num)
@@ -140,7 +155,7 @@ void *irq_routines[16] =
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0};
 
-void irq_install_handler(int irq, void (*handler)(struct regs *r))
+void irq_install_handler(int irq, void (*handler)())
 {
     irq_routines[irq] = handler;
 }
@@ -150,17 +165,17 @@ void irq_uninstall_handler(int irq)
     irq_routines[irq] = 0;
 }
 
-void irq_handler(struct regs *r)
+void irq_handler(int32_t num)
 {
-    void (*handler)(struct regs *r);
+    void (*handler)();
 
-    handler = irq_routines[r->int_no - 32];
+    handler = irq_routines[num - 32];
     if (handler)
     {
-        handler(r);
+        handler();
     }
 
-    if (r->int_no >= 40)
+    if (num >= 40)
     {
         outb(0xA0, 0x20);
     }
