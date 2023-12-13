@@ -100,7 +100,7 @@ IRQ  15,    47
 irq_common:
     pushad
     push [esp+32]
-    call fault_handler
+    call irq_handler
     pop eax
     popad
     add esp, 8
