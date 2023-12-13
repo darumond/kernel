@@ -22,6 +22,7 @@ idt_load:
     .global isr\code
     isr\code:
         CLI
+        PUSH 1
         PUSH \code
         JMP isr_common
 .endm

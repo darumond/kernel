@@ -3,9 +3,12 @@
 int init_serial()
 {
    outb(PORT + 1, 0x00); // Disable all interrupts
-   outb(PORT + 3, 0x80); // Enable DLAB (set baud rate divisor)
-   outb(PORT + 0, 0x03); // Set divisor to 3 (lo byte) 38400 baud
+   outb(PORT + 3, 0b10000000); // Enable DLAB (set baud rate divisor) 1000 0000 set DLAB to 1
+   //BAUD RATE
+   outb(PORT + 0, 0x03); // Set divisor to 3 (lo byte) 38400 baud 0000 0011
    outb(PORT + 1, 0x00); //                  (hi byte)
+
+   
    outb(PORT + 3, 0x03); // 8 bits, no parity, one stop bit
    outb(PORT + 2, 0xC7); // Enable FIFO, clear them, with 14-byte threshold
    outb(PORT + 4, 0x0B); // IRQs enabled, RTS/DSR set
@@ -36,8 +39,6 @@ void write_serial(char a)
 }
 int write(const char *buf, size_t count)
 {
-   init_serial();
-
    for (size_t i = 0; i < count; i++)
    {
       write_serial(buf[i]);

@@ -27,20 +27,21 @@
 #include "gdt.h"
 #include "idt.h"
 #include "serial.h"
-
+#include "pit.h"
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
 	(void)magic;
 	(void)info;
 
 	char star[4] = "|/-\\";
+	
 	init_serial();
 	printf("toto");
 	init_gdt();
 	init_idt();
 
-
-	asm volatile("Int $1");
+	// initPIT();
+	// asm volatile("Int $32");
 
 	printf("toto3");
 	for (;;);	

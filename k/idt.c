@@ -67,8 +67,8 @@ void init_pic()
     outb(0xA1, 0x01); // Enable 8086/88 (MCS-80/85) mode
 
     // MASK
-    outb(0x21, 0x0);
-    outb(0xA1, 0x0);
+    outb(0x21, 0xFC);
+    outb(0xA1, 0xFC);
 }
 
 void init_idt()
@@ -167,6 +167,11 @@ void irq_uninstall_handler(int irq)
 
 void irq_handler(int32_t num)
 {
+    if (num == 33)
+    {
+        printf("A LAIIDEEEEE \n");
+    }
+    // printf("IN handler %d", num);
     void (*handler)();
 
     handler = irq_routines[num - 32];

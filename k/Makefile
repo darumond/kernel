@@ -35,6 +35,7 @@ OBJS	= \
 	  gdt_load.o \
 	  idt.o \
 	  idt_load.o \
+	  pit.o
 	  
 
 

@@ -6,13 +6,6 @@
 #include <../../libs/libc/include/string.h>
 #include <../../libs/libc/include/stdio.h>
 
-struct regs
-{
-    unsigned int gs, fs, es, ds;
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    unsigned int int_no, err_code;
-    unsigned int eip, cs, eflags, useresp, ss;
-};
 struct idt_entry
 {
     uint16_t base_low;
@@ -33,6 +26,7 @@ typedef struct idt_ptr idt_ptr_t;
 void init_idt();
 void setIdtGates(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
 void fault_handler(int32_t num);
+void irq_install_handler(int irq, void (*handler)());
 
 extern void isr0();
 extern void isr1();
