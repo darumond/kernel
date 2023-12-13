@@ -28,6 +28,7 @@
 #include "idt.h"
 #include "serial.h"
 #include "pit.h"
+#include "keyboard.h"
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
 	(void)magic;
@@ -39,7 +40,7 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 	printf("toto");
 	init_gdt();
 	init_idt();
-
+	initKeyboard();
 	// initPIT();
 	// asm volatile("Int $32");
 

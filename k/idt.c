@@ -169,7 +169,7 @@ void irq_handler(int32_t num)
 {
     if (num == 33)
     {
-        printf("A LAIIDEEEEE \n");
+        // printf("A LAIIDEEEEE \n");
     }
     // printf("IN handler %d", num);
     void (*handler)();
@@ -177,6 +177,7 @@ void irq_handler(int32_t num)
     handler = irq_routines[num - 32];
     if (handler)
     {
+        // printf("A LAIIDEEEEE2 \n");
         handler();
     }
 
